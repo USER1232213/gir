@@ -3,6 +3,17 @@ import asyncio
 import aiohttp
 from datetime import datetime
 
+import threading
+from http.server import HTTPServer, BaseHTTPRequestHandler
+class H(BaseHTTPRequestHandler):
+    def do_GET(self):
+        self.send_response(200)
+        self.end_headers()
+        self.wfile.write(b"OK")
+    def log_message(self, *a): pass
+threading.Thread(target=lambda: HTTPServer(("0.0.0.0", 10000), H).serve_forever(), daemon=True).start()
+
+
 # ── Configurare ───────────────────────────────────────────────────────────────
 BOT_TOKEN = os.environ.get("BOT_TOKEN", "8670161331:AAGKofK4yxbbuhfhyqgW7CMg7PEUISBo1BA")
 CHAT_ID   = os.environ.get("CHAT_ID",   "8639469548")
